@@ -93,10 +93,10 @@
 
   <div class="main-wrap">
 
-    <div class="featured-section" ng-if="!categoriaActiva">
-      <h2 class="section-title mb-3">⭐ Productos <span>Destacados</span></h2>
+    <div class="featured-section" ng-if="(productosMostrados | filter:{destacado: true}).length > 0">
+      <h2 class="section-title mb-3">⭐ Destacados <span>{{categoriaActiva ? 'de ' + categoriaActiva : ''}}</span></h2>
       <div class="featured-scroll">
-        <div class="featured-card" ng-repeat="p in productos | filter:{destacado: true} | limitTo:8" ng-click="abrirModal(p)">
+        <div class="featured-card" ng-repeat="p in productosMostrados | filter:{destacado: true} | limitTo:8" ng-click="abrirModal(p)">
           <img ng-src="{{p.imagen}}" alt="{{p.nombre}}" />
           <div class="featured-info">
             <p class="featured-name">{{p.nombre}}</p>
