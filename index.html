@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="tiendaApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniShop – Todo lo que necesitas</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body ng-controller="TiendaCtrl">
+
+  <nav class="navbar-omni d-flex align-items-center">
+    <a class="navbar-brand-text me-3" href="#">Omni<span>Shop</span></a>
+
+    <div class="nav-search-wrap d-none d-md-block">
+      <input type="text" class="nav-search" placeholder="Buscar en OmniShop..." ng-model="busquedaGlobal" />
+    </div>
+
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <button class="cart-btn" ng-click="abrirModalCarrito()" id="cartBtn">
+        <i class="bi bi-cart3 fs-5"></i>
+        <span ng-if="totalCarrito() > 0">${{totalCarrito() | currency:'':2}}</span>
+        <span ng-if="totalCarrito() == 0">Mi Carrito</span>
+        <span class="cart-badge" ng-if="cantidadItems() > 0">{{cantidadItems()}}</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero-slider">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1400&h=500&fit=crop" alt="Tecnología" />
+          <div class="hero-overlay">
+            <div class="hero-label">Novedades 2026</div>
+            <div class="hero-title">El futuro de la tecnología está aquí</div>
+            <a href="#productos" class="hero-btn">Ver Electrónica <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&h=500&fit=crop" alt="Moda" />
+          <div class="hero-overlay">
+            <div class="hero-label">Nueva Colección</div>
+            <div class="hero-title">Moda que define tu estilo único</div>
+            <a href="#productos" class="hero-btn">Explorar Ropa <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1400&h=500&fit=crop" alt="Deportes" />
+          <div class="hero-overlay">
+            <div class="hero-label">Temporada Activa</div>
+            <div class="hero-title">Equípate para superar tus metas</div>
+            <a href="#productos" class="hero-btn">Ver Deportes <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&h=500&fit=crop" alt="Hogar" />
+          <div class="hero-overlay">
+            <div class="hero-label">Oferta Especial</div>
+            <div class="hero-title">Transforma tu hogar con estilo</div>
+            <a href="#productos" class="hero-btn">Ver Hogar <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="cat-strip" id="productos">
+    <a class="cat-tab" ng-class="{active: !categoriaActiva}" ng-click="setCategoriaTab('')">Todo</a>
+    <a class="cat-tab" ng-repeat="cat in categorias" ng-class="{active: categoriaActiva === cat}" ng-click="setCategoriaTab(cat)">{{cat}}</a>
+  </div>
+
+  <div class="main-wrap">
+
+    <div class="featured-section" ng-if="!categoriaActiva">
+      <h2 class="section-title mb-3">⭐ Productos <span>Destacados</span></h2>
+      <div class="featured-scroll">
+        <div class="featured-card" ng-repeat="p in productos | filter:{destacado: true} | limitTo:8" ng-click="abrirModal(p)">
+          <img ng-src="{{p.imagen}}" alt="{{p.nombre}}" />
+          <div class="featured-info">
+            <p class="featured-name">{{p.nombre}}</p>
+            <div class="featured-price">
+              <span ng-if="p.descuento > 0">
+                ${{precioConDescuento(p) | number:2}}
+                <span style="font-size:.75rem; text-decoration:line-through; opacity:.7; margin-left:.3rem">${{p.precio | number:2}}</span>
+              </span>
+              <span ng-if="p.descuento == 0">${{p.precio | number:2}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">
+        Productos de la categoría:
+        <span>{{categoriaActiva || 'Todos'}}</span>
+      </h2>
+      <div class="filter-bar">
+        <input type="text" class="search-input" placeholder="Buscar producto..." ng-model="filtroBusqueda" />
+        <select class="cat-select" ng-model="categoriaActiva" ng-change="setCategoriaTab(categoriaActiva)">
+          <option value="">Todas las categorías</option>
+          <option ng-repeat="cat in categorias" value="{{cat}}">{{cat}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-grid" ng-if="productosMostrados.length > 0">
+      <div class="product-card" ng-repeat="p in productosMostrados | orderBy: 'nombre'">
+        <div class="card-img-wrap" ng-click="abrirModal(p)">
+          <img ng-src="{{p.imagen}}" alt="{{p.nombre}}" />
+          <span class="card-badge">{{p.tag}}</span>
+          <span class="discount-badge" ng-if="p.descuento > 0">-{{p.descuento}}%</span>
+        </div>
+        <div class="card-body-custom">
+          <div class="stars">
+            <i class="bi bi-star-fill" ng-repeat="s in p.stars track by $index"></i>
+            <i class="bi bi-star" ng-repeat="s in p.emptyStars track by $index"></i>
+          </div>
+          <p class="card-title-custom">{{p.nombre}}</p>
+          <p class="card-desc">{{p.descripcion}}</p>
+          <div class="card-price-row">
+            <div>
+              <span ng-if="p.descuento > 0">
+                <div class="price-original">${{p.precio | number:2}}</div>
+                <div class="price-current discounted">${{precioConDescuento(p) | number:2}}</div>
+              </span>
+              <span ng-if="p.descuento == 0">
+                <div class="price-current">${{p.precio | number:2}}</div>
+              </span>
+            </div>
+            <span style="font-size:.75rem; color:var(--text-muted)">
+              <i class="bi bi-box-seam"></i> {{p.stock}}
+            </span>
+          </div>
+        </div>
+        <div class="card-footer-custom">
+          <span class="tag-chip">{{p.tag}}</span>
+          <button class="btn-detalles" ng-click="abrirModal(p)">
+            <i class="bi bi-eye me-1"></i> Detalles
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" ng-if="productosMostrados.length === 0">
+      <i class="bi bi-search"></i>
+      <p>No se encontraron productos para "<strong>{{filtroBusqueda || busquedaGlobal}}</strong>"</p>
+      <button class="btn-detalles" ng-click="filtroBusqueda = ''; busquedaGlobal = ''">Limpiar búsqueda</button>
+    </div>
+
+  </div><div class="footer">
+    <p>© 2026 <span>OmniShop</span> – Todo lo que necesitas en un solo lugar.</p>
+    <p style="margin:0;font-size:.75rem">Desarrollado con AngularJS · Bootstrap 5.3 · HTML5 · CSS3</p>
+  </div>
+
+  <div class="modal fade modal-product" id="modalProducto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content" ng-if="productoSeleccionado">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-bag me-2"></i> Detalles del Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <img ng-src="{{productoSeleccionado.imagen}}" alt="{{productoSeleccionado.nombre}}" class="modal-product-img" />
+          <div class="d-flex align-items-start justify-content-between gap-2 mb-1">
+            <h4 style="font-family:'Syne',sans-serif; font-weight:800; margin:0;">{{productoSeleccionado.nombre}}</h4>
+            <div class="text-end">
+              <span ng-if="productoSeleccionado.descuento > 0">
+                <div class="modal-price discounted">${{precioConDescuento(productoSeleccionado) | number:2}}</div>
+                <div class="modal-price-orig">${{productoSeleccionado.precio | number:2}}</div>
+                <div style="font-size:.78rem; background:var(--red); color:#fff; display:inline-block; padding:.1rem .5rem; border-radius:50px; margin-top:.2rem;">
+                  Ahorra {{productoSeleccionado.descuento}}%
+                </div>
+              </span>
+              <span ng-if="productoSeleccionado.descuento == 0">
+                <div class="modal-price">${{productoSeleccionado.precio | number:2}}</div>
+              </span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="stars">
+              <i class="bi bi-star-fill" ng-repeat="s in productoSeleccionado.stars track by $index"></i>
+              <i class="bi bi-star" ng-repeat="s in productoSeleccionado.emptyStars track by $index"></i>
+            </div>
+            <span style="font-size:.8rem; color:var(--text-muted)">· {{productoSeleccionado.categoria}}</span>
+          </div>
+          <p class="modal-desc">{{productoSeleccionado.descripcion}}</p>
+          <div class="d-flex gap-2 flex-wrap mb-3">
+            <span class="tag-chip"><i class="bi bi-tag me-1"></i>{{productoSeleccionado.tag}}</span>
+            <span class="tag-chip"><i class="bi bi-box-seam me-1"></i>Stock: {{productoSeleccionado.stock}}</span>
+            <span class="tag-chip" ng-if="productoSeleccionado.descuento > 0" style="background:#fef2f2; color:var(--red);">
+              <i class="bi bi-percent me-1"></i>{{productoSeleccionado.descuento}}% descuento
+            </span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <span style="font-size:.88rem; font-weight:600;">Cantidad:</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" ng-click="decrementarQty()">−</button>
+              <span class="qty-val">{{cantidadModal}}</span>
+              <button class="qty-btn" ng-click="incrementarQty(productoSeleccionado)">+</button>
+            </div>
+            <span style="font-size:.82rem; color:var(--text-muted)">
+              Total: <strong>${{(precioConDescuento(productoSeleccionado) * cantidadModal) | number:2}}</strong>
+            </span>
+          </div>
+        </div>
+        <div class="modal-body pt-0">
+          <div class="modal-footer-custom">
+            <button class="btn-cancelar" data-bs-dismiss="modal" ng-click="cerrarModal()"><i class="bi bi-x-circle me-1"></i> Cancelar</button>
+            <button class="btn-agregar" ng-click="agregarAlCarrito(productoSeleccionado)"><i class="bi bi-cart-plus"></i> Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade modal-cart" id="modalCarrito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-cart3 me-2"></i> Carrito de Compra</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="empty-cart" ng-if="carrito.length === 0">
+            <i class="bi bi-cart-x"></i>
+            <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:1.1rem;">Tu carrito está vacío</p>
+            <p style="font-size:.88rem;">¡Agrega algunos productos para comenzar!</p>
+          </div>
+          <div class="table-responsive" ng-if="carrito.length > 0">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio Unit.</th>
+                  <th>Cantidad</th>
+                  <th>Sub Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in carrito">
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img ng-src="{{item.imagen}}" alt="{{item.nombre}}" style="width:44px; height:44px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
+                      <span class="item-name">{{item.nombre}}</span>
+                    </div>
+                  </td>
+                  <td>${{item.precioFinal | number:2}}</td>
+                  <td>
+                    <div class="qty-ctrl">
+                      <button class="qty-btn" ng-click="decrementarCarrito(item)">−</button>
+                      <span class="qty-val">{{item.cantidad}}</span>
+                      <button class="qty-btn" ng-click="incrementarCarrito(item)">+</button>
+                    </div>
+                  </td>
+                  <td style="font-weight:700;">${{(item.precioFinal * item.cantidad) | number:2}}</td>
+                  <td>
+                    <button class="btn-remove-item" ng-click="eliminarDelCarrito(item)" title="Eliminar"><i class="bi bi-trash3"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="cart-total-row">
+                  <td colspan="3" style="text-align:right; padding-right:1rem;">Total a Pagar:</td>
+                  <td colspan="2" style="color:var(--accent);">${{totalCarrito() | number:2}}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer border-0 d-flex justify-content-between">
+          <button class="btn-cerrar-cart" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i> Cerrar</button>
+          <button class="btn-pagar" ng-click="pagar()" ng-if="carrito.length > 0"><i class="bi bi-credit-card me-1"></i> Pagar ${{totalCarrito() | number:2}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-omni" id="toastOmni">
+    <i class="bi" ng-class="toastIcon"></i>
+    <span>{{toastMsg}}</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  
+  <script src="app.js"></script>
+
+</body>
+</html>
