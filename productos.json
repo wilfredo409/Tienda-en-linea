@@ -190,7 +190,7 @@
       "descuento": 30,
       "categoria": "Hogar",
       "tag": "Oferta",
-      "imagen": "https://images.unsplash.com/photo-1584990347449-a3d9a5a0e2a7?w=400&h=300&fit=crop",
+      "imagen": "https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=400&h=300&fit=crop",
       "rating": 4,
       "destacado": false,
       "stock": 70
@@ -203,7 +203,7 @@
       "descuento": 0,
       "categoria": "Deportes",
       "tag": "Fútbol",
-      "imagen": "https://images.unsplash.com/photo-1614632537239-e2258e08afc8?w=400&h=300&fit=crop",
+      "imagen": "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400&h=300&fit=crop",
       "rating": 4,
       "destacado": false,
       "stock": 100
@@ -242,7 +242,7 @@
       "descuento": 0,
       "categoria": "Deportes",
       "tag": "Tenis",
-      "imagen": "https://images.unsplash.com/photo-1617083934555-ac5e3d3e4b82?w=400&h=300&fit=crop",
+      "imagen": "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=400&h=300&fit=crop",
       "rating": 4,
       "destacado": false,
       "stock": 22
@@ -274,4 +274,129 @@
       "stock": 45
     },
     {
-      "id":
+      "id": 22,
+      "nombre": "Guitarra Acústica Folk 41\"",
+      "descripcion": "Guitarra acústica de 41 pulgadas, tapa de abeto macizo, aros y fondo de caoba, diapasón de palisandro, cuerdas de bronce fosforado y acabado brillante natural.",
+      "precio": 249.99,
+      "descuento": 10,
+      "categoria": "Arte y Manualidades",
+      "tag": "Música",
+      "imagen": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&h=300&fit=crop",
+      "rating": 5,
+      "destacado": true,
+      "stock": 12
+    },
+    {
+      "id": 23,
+      "nombre": "Cámara Mirrorless Alpha X",
+      "descripcion": "Cámara sin espejo con sensor full-frame de 42MP, estabilización de imagen en 5 ejes, ráfaga de 20fps, vídeo 4K 120fps y batería para 800 disparos. Kit con lente 28-75mm.",
+      "precio": 2199.99,
+      "descuento": 0,
+      "categoria": "Arte y Manualidades",
+      "tag": "Fotografía",
+      "imagen": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop",
+      "rating": 5,
+      "destacado": true,
+      "stock": 7
+    },
+    {
+      "id": 24,
+      "nombre": "Mesa de Dibujo LED A3",
+      "descripcion": "Mesa de luz LED ultra delgada A3, brillo ajustable en 3 niveles, panel acrílico con iluminación uniforme, alimentación USB-C y estuche de transporte incluido.",
+      "precio": 44.99,
+      "descuento": 25,
+      "categoria": "Arte y Manualidades",
+      "tag": "Diseño",
+      "imagen": "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=400&h=300&fit=crop",
+      "rating": 4,
+      "destacado": false,
+      "stock": 30
+    },
+    {
+      "id": 25,
+      "nombre": "Crema Hidratante Lumière",
+      "descripcion": "Crema facial de hidratación profunda con ácido hialurónico, vitamina C estabilizada, niacinamida al 10% y extracto de aloe vera. Sin parabenos, dermatológicamente probada.",
+      "precio": 34.99,
+      "descuento": 0,
+      "categoria": "Belleza",
+      "tag": "Skincare",
+      "imagen": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+      "rating": 4,
+      "destacado": false,
+      "stock": 90
+    },
+    {
+      "id": 26,
+      "nombre": "Perfume Noir Absolu 100ml",
+      "descripcion": "Eau de parfum oriental amaderado con notas de salida de bergamota y mandarina, corazón de rosa y jazmín, y fondo de sándalo, vetiver y almizcle. Duración 8-10 horas.",
+      "precio": 89.99,
+      "descuento": 15,
+      "categoria": "Belleza",
+      "tag": "Lujo",
+      "imagen": "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&h=300&fit=crop",
+      "rating": 5,
+      "destacado": true,
+      "stock": 35
+    },
+    {
+      "id": 27,
+      "nombre": "Set Maquillaje Glow Studio",
+      "descripcion": "Set profesional de maquillaje con 12 sombras de ojos, 2 labiales matte, base de cobertura total, corrector y contorno facial. Fórmula vegana y cruelty-free.",
+      "precio": 69.99,
+      "descuento": 20,
+      "categoria": "Belleza",
+      "tag": "Maquillaje",
+      "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=300&fit=crop",
+      "rating": 4,
+      "destacado": true,
+      "stock": 48
+    },
+    {
+      "id": 28,
+      "nombre": "Secadora de Cabello Ionic Pro",
+      "descripcion": "Secadora profesional con motor DC de 2400W, tecnología iónica y de turmalina, 3 velocidades y 4 temperaturas, difusor y concentrador incluidos. Reduce el frizz al 70%.",
+      "precio": 79.99,
+      "descuento": 0,
+      "categoria": "Belleza",
+      "tag": "Cabello",
+      "imagen": "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=400&h=300&fit=crop",
+      "rating": 4,
+      "destacado": false,
+      "stock": 42
+    },
+    {
+      "id": 29,
+      "nombre": "Set de Pinceles Profesionales",
+      "descripcion": "Kit de 15 pinceles para óleo, acrílico y acuarela con estuche protector y espátula de mezcla.",
+      "precio": 24.99,
+      "descuento": 0,
+      "categoria": "Arte y Manualidades",
+      "tag": "Arte",
+      "imagen": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=300&fit=crop",
+      "rating": 5,
+      "destacado": false,
+      "stock": 50
+    },
+    {
+      "id": 30,
+      "nombre": "Caballete de Madera Clásico",
+      "descripcion": "Caballete de estudio ajustable hecho de madera de haya, ideal para sostener lienzos grandes de hasta 120cm de altura.",
+      "precio": 85.00,
+      "descuento": 10,
+      "categoria": "Arte y Manualidades",
+      "tag": "Estudio",
+      "imagen": "https://images.unsplash.com/photo-1580136608079-72029d0de130?w=400&h=300&fit=crop",
+      "rating": 4,
+      "destacado": true,
+      "stock": 15
+    }
+  ],
+  "categorias": [
+    "Electrónica",
+    "Ropa",
+    "Hogar",
+    "Deportes",
+    "Arte y Manualidades",
+    "Belleza"
+  ]
+}

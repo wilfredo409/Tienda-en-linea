@@ -620,3 +620,14 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   margin-top: 3rem;
 }
 .footer span { color: var(--accent); font-weight: 700; }
+
+/* ─── CORRECCIÓN BOTONES DEL CARRUSEL ─── */
+.carousel-control-prev, 
+.carousel-control-next {
+  width: 5%; /* Hace que la zona clickeable sea muy delgada y no estorbe */
+  z-index: 10;
+}
+.hero-btn {
+  position: relative;
+  z-index: 20; /* Obliga al botón naranja a estar por encima de cualquier control */
+}

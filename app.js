@@ -21,15 +21,14 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
     $scope.toastMsg         = '';   
     $scope.toastIcon        = 'bi-check-circle'; 
 
-    /* ── Instancias de modales Bootstrap ── */
     var modalProductoEl = document.getElementById('modalProducto');
     var modalCarritoEl  = document.getElementById('modalCarrito');
-    // Verificamos si los modales existen en el DOM antes de instanciarlos
     var bsModalProducto = modalProductoEl ? new bootstrap.Modal(modalProductoEl) : null;
     var bsModalCarrito  = modalCarritoEl ? new bootstrap.Modal(modalCarritoEl) : null;
 
     /**
      * FUNCIÓN: procesarDatos
+     * Procesa la respuesta exitosa del JSON externo
      */
     var procesarDatos = function(data) {
       data.productos.forEach(function(p) {
@@ -42,35 +41,20 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
     };
 
     /**
-     * FALLBACK (DATOS DE RESPALDO)
+     * PETICIÓN HTTP EXCLUSIVA AL ARCHIVO JSON EXTERNO
+     * Se agrega un parámetro de tiempo para evitar que Chrome guarde caché.
      */
-    var fallbackData = {
-      "productos": [
-        { "id": 1, "nombre": "Laptop UltraSlim Pro 15", "descripcion": "Portátil de alto rendimiento con procesador Intel Core i7.", "precio": 899.99, "descuento": 15, "categoria": "Electrónica", "tag": "Más Vendido", "imagen": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop", "rating": 4, "destacado": true, "stock": 25 },
-        { "id": 2, "nombre": "Smartphone Galaxy Z5", "descripcion": "Teléfono inteligente con pantalla AMOLED de 6.7 pulgadas.", "precio": 749.99, "descuento": 0, "categoria": "Electrónica", "tag": "Nuevo", "imagen": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop", "rating": 5, "destacado": true, "stock": 40 },
-        { "id": 3, "nombre": "Audífonos Noise Pro X", "descripcion": "Auriculares inalámbricos con cancelación activa de ruido.", "precio": 199.99, "descuento": 20, "categoria": "Electrónica", "tag": "Oferta", "imagen": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop", "rating": 4, "destacado": false, "stock": 60 },
-        { "id": 7, "nombre": "Camiseta Casual Premium", "descripcion": "Camiseta de algodón pima 100% de alta calidad.", "precio": 29.99, "descuento": 0, "categoria": "Ropa", "tag": "Básico", "imagen": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop", "rating": 4, "destacado": false, "stock": 150 },
-        { "id": 8, "nombre": "Chaqueta Impermeable Trek", "descripcion": "Chaqueta outdoor con membrana Gore-Tex.", "precio": 189.99, "descuento": 25, "categoria": "Ropa", "tag": "Outdoor", "imagen": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=300&fit=crop", "rating": 5, "destacado": true, "stock": 30 },
-        { "id": 11, "nombre": "Sofá Sectional Comfort+", "descripcion": "Sofá seccional de 4 plazas.", "precio": 1299.99, "descuento": 20, "categoria": "Hogar", "tag": "Premium", "imagen": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop", "rating": 5, "destacado": true, "stock": 8 },
-        { "id": 17, "nombre": "Bicicleta MTB Carbon X9", "descripcion": "Bicicleta de montaña con cuadro de carbono.", "precio": 2499.99, "descuento": 10, "categoria": "Deportes", "tag": "Pro", "imagen": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop", "rating": 5, "destacado": true, "stock": 5 },
-        { "id": 26, "nombre": "Perfume Noir Absolu 100ml", "descripcion": "Eau de parfum oriental amaderado.", "precio": 89.99, "descuento": 15, "categoria": "Belleza", "tag": "Lujo", "imagen": "https://images.unsplash.com/photo-1541643600914-78b084683702?w=400&h=300&fit=crop", "rating": 5, "destacado": true, "stock": 35 }
-      ],
-      "categorias": [ "Electrónica", "Ropa", "Hogar", "Deportes", "Arte y Manualidades", "Belleza" ]
-    };
-
-    /**
-     * Petición HTTP a la misma carpeta
-     */
-    $http.get('productos.json').then(function (res) {
+    $http.get('productos.json?v=' + Date.now()).then(function (res) {
+      // Éxito: lee el archivo productos.json externo
       procesarDatos(res.data);
     }, function () {
-      console.warn("No se pudo cargar productos.json por problemas de red/CORS. Utilizando el listado de emergencia.");
-      procesarDatos(fallbackData);
-      $scope.mostrarToast('Modo sin servidor activo. Algunos productos podrían faltar.', 'bi-info-circle');
+      // Error: Si el navegador lo bloquea (CORS), muestra el error en pantalla
+      console.error("Error: El navegador bloqueó la lectura del archivo JSON externo por políticas de CORS.");
+      $scope.mostrarToast('Error de servidor: No se pudo cargar el archivo productos.json.', 'bi-exclamation-triangle');
     });
 
     /* ──────────────────────────────────────
-       FILTROS (SISTEMA MEJORADO Y EFICIENTE)
+       FILTROS
     ────────────────────────────────────── */
     $scope.$watchGroup(['productos', 'categoriaActiva', 'filtroBusqueda', 'busquedaGlobal'], function() {
       if (!$scope.productos) return;
@@ -96,16 +80,13 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
     };
 
     /* ──────────────────────────────────────
-       PRECIOS
+       PRECIOS Y MODAL
     ────────────────────────────────────── */
     $scope.precioConDescuento = function (p) {
       if (!p) return 0;
       return p.descuento > 0 ? p.precio * (1 - p.descuento / 100) : p.precio;
     };
 
-    /* ──────────────────────────────────────
-       MODAL PRODUCTO
-    ────────────────────────────────────── */
     $scope.abrirModal = function (producto) {
       $scope.productoSeleccionado = producto;
       $scope.cantidadModal = 1;
@@ -130,10 +111,7 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
     ────────────────────────────────────── */
     $scope.agregarAlCarrito = function (producto) {
       if (!producto) return;
-      if ($scope.cantidadModal < 1) {
-        $scope.mostrarToast('La cantidad debe ser al menos 1.', 'bi-exclamation-triangle');
-        return;
-      }
+      if ($scope.cantidadModal < 1) return;
 
       var precioFinal = $scope.precioConDescuento(producto);
       var existente = $scope.carrito.find(function (item) {
@@ -195,7 +173,7 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
     };
 
     /* ──────────────────────────────────────
-       MODAL CARRITO & NOTIFICACIONES
+       MODAL CARRITO & PAGO
     ────────────────────────────────────── */
     $scope.abrirModalCarrito = function () {
       if (bsModalCarrito) bsModalCarrito.show();
@@ -203,6 +181,16 @@ app.controller('TiendaCtrl', ['$scope', '$http', '$filter',
 
     $scope.pagar = function () {
       var total = $scope.totalCarrito();
+
+      $scope.carrito.forEach(function(itemCarrito) {
+        var productoOriginal = $scope.productos.find(function(p) {
+          return p.id === itemCarrito.id;
+        });
+        if (productoOriginal) {
+          productoOriginal.stock = productoOriginal.stock - itemCarrito.cantidad;
+        }
+      });
+
       $scope.carrito = [];
       if (bsModalCarrito) bsModalCarrito.hide();
       $scope.mostrarToast(
