@@ -127,6 +127,8 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   text-decoration: none;
   width: fit-content;
   transition: background .2s;
+  position: relative;
+  z-index: 20; /* Solución: Botón por encima de todo */
 }
 .hero-btn:hover { background: var(--accent-dk); color: #fff; }
 .carousel-indicators [data-bs-target] {
@@ -134,15 +136,27 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   border-radius: 50%;
   width: 8px; height: 8px;
 }
+/* Solución: Flechas del carrusel más delgadas para que no estorben */
+.carousel-control-prev, 
+.carousel-control-next {
+  width: 5%; 
+  z-index: 10;
+}
 
 /* ─── CATEGORY TABS ─── */
-.cat-strip {
+.cat-strip-bg {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+.cat-strip {
+  max-width: 1150px; /* Solución: Misma alineación que los productos */
+  margin: 0 auto;
   padding: 0 1.5rem;
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  align-items: center;
 }
 .cat-strip::-webkit-scrollbar { height: 3px; }
 .cat-strip::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
@@ -181,9 +195,17 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   font-size: 1.35rem;
   font-weight: 800;
   margin: 0;
+  flex: 1; /* Solución: Ocupa todo el espacio necesario sin romper el resto */
+  min-width: 250px;
 }
 .section-title span { color: var(--accent); }
-.filter-bar { display: flex; align-items: center; gap: .75rem; }
+.filter-bar { 
+  display: flex; 
+  align-items: center; 
+  gap: .75rem; 
+  flex-wrap: wrap; /* Solución: Se acomodan abajo si no caben */
+  justify-content: flex-end;
+}
 .search-input {
   border: 1.5px solid var(--border);
   border-radius: 50px;
@@ -192,6 +214,8 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   outline: none;
   background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat .75rem center;
   transition: border .2s;
+  min-width: 200px;
+  flex: 1; /* Solución: Input flexible */
 }
 .search-input:focus { border-color: var(--accent); }
 .cat-select {
@@ -203,6 +227,8 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   outline: none;
   cursor: pointer;
   transition: border .2s;
+  min-width: 200px;
+  flex: 1; /* Solución: Input flexible */
 }
 .cat-select:focus { border-color: var(--accent); }
 
@@ -558,7 +584,7 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
 /* ─── SUCCESS TOAST ─── */
 .toast-omni {
   position: fixed;
-  bottom: 3.5rem; right: 2rem;
+  bottom: 2rem; right: 2rem;
   background: var(--green);
   color: #fff;
   font-family: 'Syne', sans-serif;
@@ -570,16 +596,10 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   display: flex;
   align-items: center;
   gap: .6rem;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  transform: translateY(120%);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
 }
-.toast-omni.show { 
-  opacity: 1; 
-  visibility: visible; 
-  transform: translateY(0); 
-}
+.toast-omni.show { transform: translateY(0); }
 
 /* ─── NO RESULTS ─── */
 .no-results {
@@ -604,7 +624,6 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   .products-grid { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
   .main-wrap { padding: 1rem .75rem; }
   .cart-table { font-size: .78rem; }
-  .toast-omni { right: 1rem; left: 1rem; bottom: 2rem; justify-content: center; }
 }
 @media (min-width: 1200px) {
   .products-grid { grid-template-columns: repeat(4, 1fr); }
@@ -620,14 +639,3 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   margin-top: 3rem;
 }
 .footer span { color: var(--accent); font-weight: 700; }
-
-/* ─── CORRECCIÓN BOTONES DEL CARRUSEL ─── */
-.carousel-control-prev, 
-.carousel-control-next {
-  width: 5%; /* Hace que la zona clickeable sea muy delgada y no estorbe */
-  z-index: 10;
-}
-.hero-btn {
-  position: relative;
-  z-index: 20; /* Obliga al botón naranja a estar por encima de cualquier control */
-}

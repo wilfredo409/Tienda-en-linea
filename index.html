@@ -86,17 +86,19 @@
     </div>
   </div>
 
-  <div class="cat-strip" id="productos">
-    <a class="cat-tab" ng-class="{active: !categoriaActiva}" ng-click="setCategoriaTab('')">Todo</a>
-    <a class="cat-tab" ng-repeat="cat in categorias" ng-class="{active: categoriaActiva === cat}" ng-click="setCategoriaTab(cat)">{{cat}}</a>
+  <div class="cat-strip-bg" id="productos">
+    <div class="cat-strip">
+      <a class="cat-tab" ng-class="{active: !categoriaActiva}" ng-click="setCategoriaTab('')">Todo</a>
+      <a class="cat-tab" ng-repeat="cat in categorias" ng-class="{active: categoriaActiva === cat}" ng-click="setCategoriaTab(cat)">{{cat}}</a>
+    </div>
   </div>
 
   <div class="main-wrap">
 
-    <div class="featured-section" ng-if="(productosMostrados | filter:{destacado: true}).length > 0">
-      <h2 class="section-title mb-3">⭐ Destacados <span>{{categoriaActiva ? 'de ' + categoriaActiva : ''}}</span></h2>
+    <div class="featured-section">
+      <h2 class="section-title mb-3">⭐ Productos <span>Destacados</span></h2>
       <div class="featured-scroll">
-        <div class="featured-card" ng-repeat="p in productosMostrados | filter:{destacado: true} | limitTo:8" ng-click="abrirModal(p)">
+        <div class="featured-card" ng-repeat="p in productos | filter:{destacado: true} | limitTo:8" ng-click="abrirModal(p)">
           <img ng-src="{{p.imagen}}" alt="{{p.nombre}}" />
           <div class="featured-info">
             <p class="featured-name">{{p.nombre}}</p>
@@ -113,10 +115,10 @@
     </div>
 
     <div class="section-header">
-      <h3 class="section-title">
+      <h2 class="section-title">
         Productos de la categoría:
         <span>{{categoriaActiva || 'Todos'}}</span>
-      </h3>
+      </h2>
       <div class="filter-bar">
         <input type="text" class="search-input" placeholder="Buscar producto..." ng-model="filtroBusqueda" />
         <select class="cat-select" ng-model="categoriaActiva" ng-change="setCategoriaTab(categoriaActiva)">
