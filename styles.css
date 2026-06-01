@@ -596,7 +596,7 @@ h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
   display: flex;
   align-items: center;
   gap: .6rem;
-  transform: translateY(120%);
+  transform: translateY(calc(100% + 3rem));
   transition: transform .35s cubic-bezier(.34,1.56,.64,1);
 }
 .toast-omni.show { transform: translateY(0); }
